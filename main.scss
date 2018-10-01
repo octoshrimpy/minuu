@@ -16,15 +16,18 @@ body {
   bottom: 0;
   left: 0;
   background: white;
-
-  display: flex;
 }
 
 ////////////////////////////////
 // stying
 ////////////////////////////////
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
 .header {
-  
+
   padding: 2rem;
   background: transparentize(tomato, 0.5);
 
