@@ -1,0 +1,31 @@
+// compile
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 1rem;
+}
+
+.main {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: white;
+
+  display: flex;
+}
+
+////////////////////////////////
+// stying
+////////////////////////////////
+.header {
+  
+  padding: 2rem;
+  background: transparentize(tomato, 0.5);
+
+}
