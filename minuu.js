@@ -1,9 +1,7 @@
 
 window.minuu = {
   'start': function(){
-    $('[data-include]').each(function(){
-      loadContent($(this))
-    });
+    checkChildren($(document))
   },
   'startOnElm': function($elm){
     loadContent($elm)
@@ -16,12 +14,10 @@ window.minuu = {
   }
 }
 
-
 loadContent = function($elm, path = ''){
 
   // trigger elm.loadingStart
-  event = new CustomEvent('loading', {msg: 'loading element through Minuu', element: $elm})
-  document.dispatchEvent(event)
+  sendEvent('loading', 'loading element through Minuu', $elm)
 
   let includeData = $($elm).data('include')
 
@@ -57,12 +53,17 @@ loadContent = function($elm, path = ''){
     // trigger elm.loadingComplete
     sendEvent('complete', 'element finished loading through Minuu', $elm)
 
-    const children = $elm.find('[data-include]')
-    children.each(function(){
-      loadContent($(this), path)
-    })
+    checkChildren($elm, path)
   })
+}
 
+
+checkChildren = function($elm, path){
+  const children = $elm.find('[data-include]')
+  children.each(function(){
+    loadContent($(this), path)
+  })
+}
 
 /**
  * sends events to document root
@@ -79,7 +80,7 @@ sendEvent = function(eventName, eventMsg = '', elm = {}){
 
 
 // DONE: extract events into their own function
-// TODO: extract loadContent into two separate functions,
+// DONE: extract loadContent into two separate functions,
 //       one that loads, one that recurses. this way, start()
 //       can call the recursion function and not worry about
 //       iterating through children.
