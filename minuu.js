@@ -1,16 +1,27 @@
 
 window.minuu = {
-  'start': function(){
-    checkChildren($(document))
-  },
-  'startOnElm': function($elm){
-    loadContent($elm)
-  },
-  'startOnSelector': function(selector){
-    loadContent($(selector))
-  },
+  'start': __startMinuuInternal,
   'ready': function(callback){
 
+  }
+}
+
+/**
+ * Started function that can handle nothing, jquery object, or string selector
+ * @param       {optional} $elm String, jQuery Object, or nothing
+ * @constructor
+ */
+function __startMinuuInternal($elm){
+  if($elm instanceof jQuery){
+    loadContent($elm)
+  }else
+  if(typeof $elm == 'string'){
+    loadContent($(selector))
+  }else
+  if(typeof $elm == 'undefined'){
+    checkChildren($(document))
+  }else{
+    // TODO: throw error
   }
 }
 
