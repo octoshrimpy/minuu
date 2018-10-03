@@ -1,27 +1,33 @@
-$(document).ready(()=>{
 
-  window.minuu = {
-    'start': function(){
-      $('[data-include]').each(function(){
-        loadContent($(this));
-      });
-    },
-    'startOnElm': function($elm){
-      loadContent($elm);
-    },
-    'startOnSelector': function(selector){
-      loadContent($(selector));
-    }
-  };
-});
+window.minuu = {
+  'start': function(){
+    $('[data-include]').each(function(){
+      loadContent($(this))
+    });
+  },
+  'startOnElm': function($elm){
+    loadContent($elm)
+  },
+  'startOnSelector': function(selector){
+    loadContent($(selector))
+  },
+  'ready': function(callback){
+
+  }
+}
 
 
 loadContent = function($elm, path = ''){
+
+  // trigger elm.loadingStart
+  event = new CustomEvent('loading', {msg: 'loading element through Minuu', element: $elm})
+  document.dispatchEvent(event)
+
   let includeData = $($elm).data('include')
 
   if(includeData == undefined){
-    console.warn('Minuu cannot start on an element without a data-include tag');
-    return;
+    console.warn('Minuu cannot start on an element without a data-include tag')
+    return
   }
 
   if(path != ''){
@@ -35,10 +41,48 @@ loadContent = function($elm, path = ''){
   }
 
   const file = `views/${includeData}.html`
-  $($elm).load(file, function(){
+
+  $($elm).load(file, function(responseText, textStatus, req){
+
+    if(textStatus == 'success'){
+      // trigger elm.loadingSuccess
+      sendEvent('success', 'element loaded successfuly through Minuu', $elm)
+    }
+    else
+    if(textStatus == 'error'){
+      // trigger elm.loadingError
+      sendEvent('error', 'element failed to load through Minuu', $elm)
+    }
+
+    // trigger elm.loadingComplete
+    sendEvent('complete', 'element finished loading through Minuu', $elm)
+
     const children = $elm.find('[data-include]')
     children.each(function(){
       loadContent($(this), path)
     })
   })
+
+
+/**
+ * sends events to document root
+ * @param  {String} eventName name of event. will be prefixed with "minuu:"
+ * @param  {String} eventMsg  descriptor for event. optional.
+ * @param  {object} elm       Jquery DOM node that the event references
+ * @return {event}            returns the dispatchEvent return.
+ */
+sendEvent = function(eventName, eventMsg = '', elm = {}){
+    event = new CustomEvent(eventName, {msg: eventMsg, element: elm})
+    return document.dispatchEvent(event)
 }
+
+
+
+// DONE: extract events into their own function
+// TODO: extract loadContent into two separate functions,
+//       one that loads, one that recurses. this way, start()
+//       can call the recursion function and not worry about
+//       iterating through children.
+// TODO: finish logic for minuu.ready() using document.minuu:complete event
+// TODO: check RXJS and promises to make sure the complete event
+//       fires at the appropriate time after all async children
