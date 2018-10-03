@@ -2,7 +2,7 @@
 window.minuu = {
   'start': __startMinuuInternal,
   'ready': function(callback){
-
+    this.readyPromise.then(callback)
   }
 }
 
@@ -13,13 +13,13 @@ window.minuu = {
  */
 function __startMinuuInternal($elm){
   if($elm instanceof jQuery){
-    loadContent($elm)
+    this.readyPromise = loadContent($elm)
   }else
   if(typeof $elm == 'string'){
-    loadContent($(selector))
+    this.readyPromise = loadContent($(selector))
   }else
   if(typeof $elm == 'undefined'){
-    checkChildren($(document))
+    this.readyPromise = checkChildren($(document))
   }else{
     // TODO: throw error
   }
@@ -56,7 +56,6 @@ loadContent = function($elm, path = ''){
     if(textStatus == 'success'){
       // trigger elm.loadingSuccess
       sendEvent('success', 'element loaded successfuly through Minuu', $elm)
-
       checkChildren($elm, path).then(()=>{ elmLoad.resolve($elm) })
     }
     else
@@ -110,5 +109,5 @@ sendEvent = function(eventName, eventMsg = '', elm = {}){
 //       can call the recursion function and not worry about
 //       iterating through children.
 // NOPE: finish logic for minuu.ready() using document.minuu:complete event
-// TODO: check RXJS and promises to make sure the complete event
+// DONE: check RXJS and promises to make sure the complete event
 //       fires at the appropriate time after all async children
