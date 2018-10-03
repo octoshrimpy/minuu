@@ -29,6 +29,8 @@ loadContent = function($elm, path = ''){
 
   // trigger elm.loadingStart
   sendEvent('loading', 'loading element through Minuu', $elm)
+  const elmLoad = $.Deferred()
+
 
   let includeData = $($elm).data('include')
 
@@ -54,26 +56,38 @@ loadContent = function($elm, path = ''){
     if(textStatus == 'success'){
       // trigger elm.loadingSuccess
       sendEvent('success', 'element loaded successfuly through Minuu', $elm)
+
+      checkChildren($elm, path).then(()=>{ elmLoad.resolve($elm) })
     }
     else
     if(textStatus == 'error'){
       // trigger elm.loadingError
       sendEvent('error', 'element failed to load through Minuu', $elm)
+      elmLoad.reject()
     }
 
     // trigger elm.loadingComplete
     sendEvent('complete', 'element finished loading through Minuu', $elm)
 
-    checkChildren($elm, path)
+
   })
+
+  return elmLoad.promise()
 }
 
 
 checkChildren = function($elm, path){
   const children = $elm.find('[data-include]')
-  children.each(function(){
-    loadContent($(this), path)
+
+  if(children.length == 0){
+    return $.Deferred().resolve()
+  }
+
+  const promisedArray = children.map(function(){
+    return loadContent($(this), path)
   })
+
+  return $.when(...promisedArray)
 }
 
 /**
@@ -95,6 +109,6 @@ sendEvent = function(eventName, eventMsg = '', elm = {}){
 //       one that loads, one that recurses. this way, start()
 //       can call the recursion function and not worry about
 //       iterating through children.
-// TODO: finish logic for minuu.ready() using document.minuu:complete event
+// NOPE: finish logic for minuu.ready() using document.minuu:complete event
 // TODO: check RXJS and promises to make sure the complete event
 //       fires at the appropriate time after all async children
