@@ -2,6 +2,4 @@ examples/
 node_modules/
 package-lock.json
 index.html
-main.html
-main.js
 minuu.web.js
