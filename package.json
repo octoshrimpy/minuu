@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/octoshrimpy/minuu/issues"
   },
-  "homepage": "https://github.com/octoshrimpy/minuu#readme"
+  "homepage": "https://github.com/octoshrimpy/minuu#readme",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }

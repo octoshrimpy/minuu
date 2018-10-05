@@ -1,3 +1,6 @@
 examples/
 index.html
 main.html
+node_modules/
+package-lock.json
+minuu.web.js
