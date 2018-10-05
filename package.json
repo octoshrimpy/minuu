@@ -1,0 +1,29 @@
+{
+  "name": "minuu",
+  "version": "1.0.0",
+  "description": "Minimal templating engine for quick, component-based prototyping",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octoshrimpy/minuu.git"
+  },
+  "keywords": [
+    "minimal",
+    "small",
+    "template",
+    "engine",
+    "templating",
+    "render",
+    "prototype",
+    "prototyping"
+  ],
+  "author": "octoshrimpy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/octoshrimpy/minuu/issues"
+  },
+  "homepage": "https://github.com/octoshrimpy/minuu#readme"
+}
