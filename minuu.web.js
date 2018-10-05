@@ -1,4 +1,3 @@
-import * as $ from 'jquery'
 
 window.minuu = {
   'start': __startMinuuInternal,
@@ -8,7 +7,7 @@ window.minuu = {
 }
 
 /**
- * Starter function that can handle nothing, jquery object, or string selector
+ * Started function that can handle nothing, jquery object, or string selector
  * @param       {optional} $elm String, jQuery Object, or nothing
  * @constructor
  */
@@ -22,7 +21,7 @@ function __startMinuuInternal($elm){
   if(typeof $elm == 'undefined'){
     this.readyPromise = checkChildren($(document))
   }else{
-    $.Deferred().reject()
+    // TODO: throw error
   }
 }
 
@@ -101,15 +100,3 @@ sendEvent = function(eventName, eventMsg = '', elm = {}){
     event = new CustomEvent(eventName, {msg: eventMsg, element: elm})
     return document.dispatchEvent(event)
 }
-
-
-
-// DONE: extract events into their own function
-// DONE: extract loadContent into two separate functions,
-//       one that loads, one that recurses. this way, start()
-//       can call the recursion function and not worry about
-//       iterating through children.
-// NOPE: finish logic for minuu.ready() using document.minuu:complete event
-// DONE: use RXJS or promises to make sure the complete event
-//       fires at the appropriate time after all async children
-// TODO: add npm vs web usage in docs
