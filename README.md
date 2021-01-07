@@ -1,5 +1,6 @@
 ### Minuu
 _Minimal templating engine for quick, component-based prototyping_
+
 ~~ReactJs for people who need simpler solutions~~
 
 Want component-based prototyping or a way to quickly drop that navbar into every HTML page without copypasta everywhere?
